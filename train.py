@@ -21,8 +21,8 @@ parser = argparse.ArgumentParser(description='PyTorch Yolov1 Training DuanYiqun'
 parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
 parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
 parser.add_argument('--experimentname',default='sdmnv5_vscommon', type=str, help='model name for save')
-parser.add_argument('--trainroot',default='/home/claude.duan/data/VOCdevkit/VOC2012/JPEGImages/', type=str, help='for train images')
-parser.add_argument('--testroot',default='/home/claude.duan/data/VOCdevkit/VOC2012/JPEGImages/', type=str, help='for test images')
+parser.add_argument('--trainroot',default='VOCdevkit/VOC2012/JPEGImages/', type=str, help='for train images')
+parser.add_argument('--testroot',default='VOCdevkit/VOC2012/JPEGImages/', type=str, help='for test images')
 parser.add_argument('--indexdir',default='./data/yolo_train_on_VOC2012.csv', type=str, help='log direction for save')
 parser.add_argument('--batch_size',default=20, type=int, help='batch size')
 parser.add_argument('--num_epochs',default=50, type=int, help='training length')
@@ -41,7 +41,7 @@ best_loss = 1000000
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 
 print('loading dataset ...')
-Datasetinstance = Yolodata(train_file_root = '/home/claude.duan/data/VOCdevkit/VOC2012/JPEGImages/', train_listano = './voc2012.txt', test_file_root = '/home/claude.duan/data/VOCdevkit/VOC2012/JPEGImages/', test_listano = './voc2012.txt' ,batchsize=args.batch_size, snumber = args.sgrid, bnumber = args.bbxnumber, cnumber = args.classnumber)
+Datasetinstance = Yolodata(train_file_root = 'VOCdevkit/VOC2012/JPEGImages/', train_listano = './voc2012.txt', test_file_root = 'VOCdevkit/VOC2012/JPEGImages/', test_listano = './voc2012.txt' ,batchsize=args.batch_size, snumber = args.sgrid, bnumber = args.bbxnumber, cnumber = args.classnumber)
 train_loader, test_loader = Datasetinstance.getdata()
 
 print('the dataset has %d images for train' % (len(train_loader)))
@@ -66,7 +66,7 @@ if args.resume:
     net.load_state_dict(torch.load('best.plk'))
 
 print( 'testing the cuda device here')
-print('cuda', torch.cuda.current_device(), torch.cuda.device_count())
+# print('cuda', torch.cuda.current_device(), torch.cuda.device_count())
 
 criterion = YoloLoss(args.batch_size,args.bbxnumber,args.classnumber,lambda_coord= 0.5, lambda_noobj = 0.5)
 
